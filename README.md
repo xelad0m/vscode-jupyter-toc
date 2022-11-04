@@ -20,10 +20,10 @@ A [Visual Studio Code](https://code.visualstudio.com/) extension that generates 
 ## 3. Example
 
 Without numbering for 1-3 header levels
-<p><img src="./images/nonumbering.png" alt="numbered toc" width="300px"></p>
+<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/blob/main/images/nonumbering.png" alt="numbered toc" width="300px"></p>
 
 With numbering for 1-6 header levels
-<p><img src="./images/numbering.png" alt="numbered toc" width="300px"></p>
+<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/blob/main/images/numbering.png" alt="numbered toc" width="300px"></p>
 
 ## 4. Usage
 

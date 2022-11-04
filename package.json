@@ -1,0 +1,140 @@
+{
+  "name": "jupyter-toc",
+  "displayName": "Jupyter TOC",
+  "version": "0.0.1",
+  "description": "Generate Table of Contents for Jupyter notebooks.",
+  "publisher": "xelad0m",
+  "author": {
+    "name": "xelad0m"
+  },
+  "engines": {
+    "vscode": "^1.72.0"
+  },
+  "categories": [
+    "Notebooks",
+    "Formatters",
+    "Other"
+  ],
+  "license": "SEE LICENSE.txt",
+  "homepage": "https://github.com/xelad0m/vscode-jupyter-toc",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/xelad0m/vscode-jupyter-toc"
+  },
+  "bugs": {
+      "url": "https://github.com/xelad0m/vscode-jupyter-toc/issues"
+  },
+  "qna": "https://github.com/xelad0m/vscode-jupyter-toc/discussions",
+  "icon": "icon.png",
+  "galleryBanner": {
+      "color": "#ffffff",
+      "theme": "light"
+  },
+  "keywords": [
+    "jupyter",
+    "notebook",
+    "toc",
+    "markdown"
+  ],
+  "activationEvents": [
+    "onCommand:jupyter-toc.jupyterToc",
+    "onCommand:jupyter-toc.jupyterUnToc"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jupyter-toc.jupyterToc",
+        "title": "Generate TOC for Jupyter notebook",
+        "category": "Jupyter"
+      },
+      {
+        "command": "jupyter-toc.jupyterUnToc",
+        "title": "Remove TOC from Jupyter notebook",
+        "category": "Jupyter"
+      }
+    ],
+    "configuration": {
+      "title": "Jupyter TOC",
+      "displayName": "Jupyter TOC",
+      "properties": {
+        "jupyter.toc.tocHeader": {
+          "type": "string",
+          "default": "**Table of contents**",
+          "markdownDescription": "**Defines the name for the table of contents**",
+          "scope": "resource"
+        },
+        "jupyter.toc.autoSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Determines whether to automatically save the notebook after creating, updating, or deleting the table of contents.",
+          "scope": "resource"
+        },
+        "jupyter.toc.numbering": {
+          "type": "boolean",
+          "default": false,
+          "description": "Determines whether the headers need to be numbered. Valid only when there is no table of contents in document yet",
+          "scope": "resource"
+        },
+        "jupyter.toc.anchors": {
+          "type": "boolean",
+          "default": true,
+          "description": "Determines whether the table of contents elements should refer to the headings in the document. Valid only when there is no table of contents in document yet",
+          "scope": "resource"
+        },
+        "jupyter.toc.minHeaderLevel": {
+          "type": "number",
+          "default": 1,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "description": "Defines the minimum level of the header to be included in the table of contents. Valid only when there is no table of contents in document yet",
+          "scope": "resource"
+        },
+        "jupyter.toc.maxHeaderLevel": {
+          "type": "number",
+          "default": 6,
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "description": "Defines the minimum level of the header to be included in the table of contents. Valid only when there is no table of contents in document yet",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.72.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.24.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "linqts": "^1.14.4"
+  }
+}

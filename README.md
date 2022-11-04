@@ -34,7 +34,7 @@ Adding new or updating existing Table of contents:
 
 * Type "Generate"
 * Choose "Juptyer: Generate TOC for Jupyter notebook"
-  * New cell with TOC for notebook will be inserted before current selected cell
+  * New cell with TOC for notebook will be inserted before current selected cell or existing TOC wil be updated
 
 Removing Table of contents
 

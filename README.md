@@ -42,7 +42,7 @@ Removing Table of contents
 * Choose "Juptyer: Remove TOC from Jupyter notebook"
   * Notebook cell with table of content will be removed from notebook. All made formatting of headers such as numbering and anchors will be removed too.
 
-### 4.1. Some detail and tips
+### 4.1. Some details and tips
 
 1. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
 2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section.

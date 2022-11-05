@@ -52,7 +52,6 @@ Removing Table of contents
 ### 4.2. Known issues
 
 1. Anchor navigation from TOC to headers and back does not work on github due to its custom jupyter notebook renderer, but with native `jupyter notebook` it works well
-2. ...
 
 ## 5. Supported settings
 

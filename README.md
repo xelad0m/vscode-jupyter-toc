@@ -49,6 +49,11 @@ Removing Table of contents
 3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation of the table of contents in this document.
 4. **NOTE**: When generating table of contents with numbering and/or anchors the headers in the document cells are being edited. Before generate/update or remove the table of contents from notebook extension clears all headers from numbering and anchors. So if some original titles before first use of extension already had numbering and/or anchors, then such numbering and/or anchors will be lost.
 
+### 4.2. Known issues
+
+1. Anchor navigation from TOC to headers and back does not work on github due to its custom jupyter notebook renderer, but with native `jupyter notebook` it works well
+2. ...
+
 ## 5. Supported settings
 
 Key|Expected Values|Default|Description

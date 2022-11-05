@@ -35,7 +35,7 @@ Without numbering for 1-3 header levels
 With numbering for 1-6 header levels
 <p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/numbering.png" alt="pic of numbered TOC" width="300px"></p>
 
-With anchoring for 1-3 header levels
+Without anchoring for 1-6 header levels
 <p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/noanchor.png" alt="pic of non interactive TOC" width="300px"></p>
 
 ## 4. Usage

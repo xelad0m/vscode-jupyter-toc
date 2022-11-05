@@ -2,7 +2,7 @@
 
 ## 1. Summary 
 
-A [Visual Studio Code](https://code.visualstudio.com/) extension that generates a **table of contents** (TOC) for your Jupyter notebook.
+Generatation of a **table of contents** (TOC) for your Jupyter notebook in [Visual Studio Code](https://code.visualstudio.com/).
 
 ## 2. Features 
 

@@ -30,13 +30,13 @@ Generatation of a **table of contents** (TOC) for your Jupyter notebook in [Visu
 ## 3. Example
 
 Without numbering for 1-3 header levels
-<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/nonumbering.png" alt="pic of TOC" width="300px"></p>
+<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/nonumbering.png" alt="pic of TOC" width="400px"></p>
 
 With numbering for 1-6 header levels
-<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/numbering.png" alt="pic of numbered TOC" width="300px"></p>
+<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/numbering.png" alt="pic of numbered TOC" width="400px"></p>
 
 Without anchoring for 1-6 header levels
-<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/noanchor.png" alt="pic of non interactive TOC" width="300px"></p>
+<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/noanchor.png" alt="pic of non interactive TOC" width="400px"></p>
 
 ## 4. Usage
 
@@ -45,14 +45,14 @@ Without anchoring for 1-6 header levels
 
 Adding new or updating existing Table of contents:
 
-* Type "Generate"
-* Choose "Juptyer: Generate TOC for Jupyter notebook"
-  * New cell with TOC for notebook will be inserted before current selected cell or existing TOC wil be updated
+* Type "**Generate**"
+* Choose "**Juptyer: Generate TOC for Jupyter notebook**"
+  * New cell with TOC for notebook will be inserted before current selected cell or existing TOC will be updated
 
 Removing Table of contents
 
-* Type "Remove"
-* Choose "Juptyer: Remove TOC from Jupyter notebook"
+* Type "**Remove**"
+* Choose "**Juptyer: Remove TOC from Jupyter notebook**"
   * Notebook cell with table of content will be removed from notebook. All made formatting of headers such as numbering and anchors will be removed too.
 
 ### 4.1. Some details and tips
@@ -63,7 +63,7 @@ Removing Table of contents
 4. **NOTE**: When generating table of contents with numbering and/or anchors the headers in the document cells are being edited. Before generate/update or remove the table of contents from notebook the extension clears all headers from numbering and anchors. So if some original titles had numbering and/or whole title anchors, then such numbering and/or anchors will be lost. But if you have links on some words of headers they will be saved. 
 **For example:**
 - `# [My header links to some where](#http://some/where)` 
-  - this link be replaced with link to the Table of contents. **If you need to save such links, disable the option** `jupyter.toc.anchors`
+  - this link will be replaced with link to the Table of contents. **If you need to save such links, disable the option** `jupyter.toc.anchors`
 - `# My header links to [some where](#http://some/where) and [many other](#id) links` 
   - these links will continue to work correctly
 

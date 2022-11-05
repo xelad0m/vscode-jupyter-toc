@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v0.0.2 (6 November 2022)
+
 ### Added
 
 - Editor title menu items to generate and remove table of contents

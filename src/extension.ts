@@ -147,7 +147,12 @@ export class TocGenerator {
 								
 								let ht = "#".repeat(header.origLevel);
 								let anchor = `<a id='${header.anchor}'></a>`;
-								let title = (this._config.Anchor) ? `[${header.title}](#toc0_)` : header.title;
+								let title = header.title;
+
+								if (this._config.Anchor) {
+									// if orig header contains links we add empty anchor to TOC so as not to break these links
+									title = (header.isContainLinks) ? `${title}[](#toc0_)` : `[${title}](#toc0_)`;
+								}
 
 								let lineText = "";
 								if (this._config.Numbering && this._config.Anchor) {
@@ -281,38 +286,23 @@ export class TocGenerator {
 					
 					// if it is possible header
 					if(lineText.startsWith("#")) {
-						let headerLevel : number = lineText.indexOf(" ");
+						let headerLevel : number = getHeaderLevel(lineText);
 						
-						// skip not valid strings
-						if (headerLevel > MD_MAX_HEADERS_LEVEL) {
+						// skip not valid strings (error || more than 6 #)
+						if (headerLevel < 1 || headerLevel > MD_MAX_HEADERS_LEVEL) {
 							continue
 						}
 						
-						// Remove numbering in the title
-						if (lineText.match(/\#+\s*([0-9]+\.*)+\s*/) != null) {			// is there some numbering in header?
-							lineText = lineText.replace(/\s*([0-9]+\.*)+\s*/, " ");		// eliminate first numbering
-						}
-						
-						// Remove hashtag
-						let title: string = lineText.substring(headerLevel + 1);
-
-						// Remove anchor in the title
-						if (title.indexOf(this._endAnchor) > 0) {
-							title = title.substring(title.indexOf(this._endAnchor)  + this._endAnchor.length);
-						}
-
-						// Unlink title if it in markdown link: [title](#id)
-						if (title.startsWith("[")) {
-							title = title.slice(1).replace(/\].*/, "");	// takes from "[" and removes from "]" to the end
-						}
+						let [title, cleanTitle, isContainLinks] = normalizeHeader(lineText, headerLevel, this._endAnchor);
 				
 						let header = new Header(
 							headerLevel,
 							title, 
+							cleanTitle,
+							isContainLinks,
 							lineNumber, 
-							lineText.length);
+							cellIndex);
 						
-						header.cellNum = cellIndex;
 						headers.Add(header);
 					}
 				}
@@ -326,7 +316,6 @@ export class TocGenerator {
 	buildHeaders(lines: List<Header>) : List<Header> {
 		let headers : List<Header> = new List<Header>();
 		let levels = new Array<number>(); 
-		let prevLevel = 0;
 	
 		for (var index = this._config.MinLevel; index <= this._config.MaxLevel; index++) {
 			levels.push(0);
@@ -343,7 +332,7 @@ export class TocGenerator {
 					levels[lvl] = 0;
 				}
 				
-				// Have to set to 1 all skipped levels higher than current (i.e. kind broken TOC structure,
+				// Have to set to 1 all skipped levels higher than current (i.e. kind of broken TOC structure,
 				// like level 5 header follows level 3 header (1.1.1 -> 1.1.1.0.1 -> 1.1.1.1.1)
 				for (var lvl = 0; lvl < header.level - 1 ; lvl++) {
 					if (levels[lvl] == 0) {	
@@ -375,15 +364,18 @@ export class TocGenerator {
 			if (header != undefined) {
 				let tocLine : string = "";
 				let indent = "  ".repeat(header.level - 1);
+				
+				// we want to push to anchored TOC the header without links
+				let title = (this._config.Anchor && header.isContainLinks) ? header.cleanTitle : header.title;	
 
 				if (this._config.Numbering && this._config.Anchor) {
-					tocLine = `${indent}- ${header.numberingString} [${header.title}](#${header.anchor})`;
+					tocLine = `${indent}- ${header.numberingString} [${title}](#${header.anchor})`;
 				} else if (this._config.Anchor) {
-					tocLine = `${indent}- [${header.title}](#${header.anchor})`;
+					tocLine = `${indent}- [${title}](#${header.anchor})`;
 				} else if (this._config.Numbering) {
-					tocLine = `${indent}- ${header.numberingString} ${header.title}`;
+					tocLine = `${indent}- ${header.numberingString} ${title}`;
 				} else {
-					tocLine = `${indent}- ${header.title}`;
+					tocLine = `${indent}- ${title}`;
 				}
 				
 				// finalize line
@@ -408,6 +400,92 @@ function isCodeBlockIndent (text: string): boolean {
 	return (text.search(/[^\s]./) > 3 || text.startsWith('\t')); // 4+ spaces or 1+ tab
 };
 
+function getHeaderLevel(line: string, keepEmpty: boolean = false): number {
+	line = line.trim();
+	let tag = line.split(" ")[0];
+	let hTag = "";
+
+	if (!keepEmpty && line.split(" ").length == 1) {	// empty title
+		return -1;
+	}
+
+	let hTagMatch = tag.match(/\#+/);
+
+	if (hTagMatch == null) {							// overcheck, but there is no #
+		return -1;
+	} else {
+		hTag = hTagMatch[0];
+	}
+	
+	if (hTag.length < tag.length) {						// there are other than # symbols
+		return -1;
+	}
+
+	return hTag.length;
+}
+
+/**
+ * 
+ * @param validHeader A header string
+ * @param headerLevel
+ * @returns [ cleaned from numbering and anchor header sting (to keep in Cells), 
+ * 			  cleaned from internal links title (for TOC)	
+ * 			  flag whether string contain other links/anchors ]
+ */
+function normalizeHeader(validHeader: string, 
+						 headerLevel: number, 
+						 endAnchor: string): [string, string, boolean] {
+	let isContainLinks = false;
+
+	// Remove numbering in the title
+	if (validHeader.match(/\#+\s*([0-9]+\.*)+\s*/) != null) {			// is there some numbering in header after #?
+		validHeader = validHeader.replace(/\s*([0-9]+\.*)+\s*/, " ");	// eliminate first numbering, keep if numbers in title
+	}
+						
+	// Remove hashtag
+	let title: string = validHeader.substring(headerLevel + 1);
+
+	// Remove anchor in the title
+	if (title.indexOf(endAnchor) > 0) {
+		title = title.substring(title.indexOf(endAnchor)  + endAnchor.length);
+	}
+
+	// Unlink title if it is whole in markdown link: [title](#id) 
+	// We dont expect nested links in such titles, so its OK way
+	if (title.startsWith("[")) {
+		title = title.slice(1).replace(/\].*/, "");			// takes from "[" and removes from "]" to the end
+	}
+
+	const reEmptyLink = /\[\]\(.+?\)/; 						// we use empty link to anchor headers with other links
+	if (reEmptyLink.test(title)) {
+		isContainLinks = true;
+		title = title.replace(reEmptyLink, "");				// we suppose there is only one empty link
+	}
+	
+	const reLink = /\[(?<name>.+?)\]\(.+?\)/;
+	let cleanTitle = title;
+	if (reLink.test(title)) {
+		isContainLinks = true;
+		cleanTitle = removeLinks(title);
+	}
+
+	return ([title, cleanTitle, isContainLinks]);
+}
+
+function removeLinks(line: string): string {
+	const reLink = /\[(?<name>.+?)\]\(.+?\)/;
+	while (reLink.test(line)) {
+		let m = line.match(reLink);
+		if (m != null) {
+			let link = m[0];
+			let sub = m[1];
+			line = line.slice(0, m.index) + line.slice(m.index).replace(link, sub);
+		} else {
+			break
+		}
+	}
+	return line;
+}
 
 class TocConfiguration {
 	public Numbering: boolean;
@@ -489,25 +567,30 @@ class TocConfiguration {
 class Header {
 	level: number;				// representation header level (relative to min level)
 	origLevel: number;			// header level as it was in original document
-	title: string;
+	title: string;				// orig title, possible with links on some its parts
+	cleanTitle: string;			// title without links to push it in anchored TOC
+	isContainLinks: boolean;	// is there are links in original title flag
 	numbering: Array<number>;
 	numberingString: string;
 	lineNumber: number;
-	lineLength: number;
-	cellNum?: number;
+	cellNum: number;
 	anchor?: string;
   
 	constructor(headerLevel: number,
 		title: string,
+		cleanTitle: string,
+		isContainLinks: boolean,	
 		lineNumber: number,
-		lineLength: number) {
+		cellNum: number) {
 			this.level = headerLevel;
 			this.origLevel = headerLevel;
 			this.title = title;
+			this.cleanTitle = cleanTitle;
+			this.isContainLinks = isContainLinks;
 			this.numbering = [];
 			this.numberingString = "";
-			this.lineNumber = lineNumber;
-			this.lineLength = lineLength;
+			this.lineNumber = lineNumber, 
+			this.cellNum = cellNum;
 	}
 
 	public setNumberingString() {

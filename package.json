@@ -1,7 +1,7 @@
 {
   "name": "jupyter-toc",
   "displayName": "Jupyter TOC",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate Table of Contents for Jupyter notebooks.",
   "publisher": "xelad0m",
   "author": {
@@ -34,6 +34,7 @@
     "jupyter",
     "notebook",
     "toc",
+    "ipynb",
     "markdown"
   ],
   "activationEvents": [
@@ -45,16 +46,30 @@
     "commands": [
       {
         "command": "jupyter-toc.jupyterToc",
-        "title": "Generate TOC for Jupyter notebook",
+        "title": "Generate table of contents",
         "category": "Jupyter"
       },
       {
         "command": "jupyter-toc.jupyterUnToc",
-        "title": "Remove TOC from Jupyter notebook",
+        "title": "Remove table of contents",
         "category": "Jupyter"
       }
     ],
-    "configuration": {
+    "menus": {
+      "editor/title": [
+        {
+          "command": "jupyter-toc.jupyterToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "group": "1_run@0"
+        },
+        {
+          "command": "jupyter-toc.jupyterUnToc",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "group": "1_run@1"
+        }
+      ]
+    },
+      "configuration": {
       "title": "Jupyter TOC",
       "displayName": "Jupyter TOC",
       "properties": {

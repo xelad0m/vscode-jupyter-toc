@@ -1,9 +1,20 @@
 # Change Log
 
-All notable changes to the "jupyter-toc" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
 
-- Initial release
+### Added
+
+- Editor title menu items to generate and remove table of contents
+
+### Changed
+
+- Renamed command titles
+
+## v0.0.1 (5 November 2022)
+
+### Thanks
+
+- [Markdown TOC](https://marketplace.visualstudio.com/items?itemName=joffreykern.markdown-toc)
+- [Joffrey Kern](https://github.com/joffreykern/vscode-markdown-toc)
+- [Kiran Rao](https://github.com/curioustechizen/vscode-markdown-toc)
+- [Your First Extension](https://code.visualstudio.com/api/get-started/your-first-extension)

@@ -1,4 +1,4 @@
-# Jupyter TOC generation support for Visual Studio Code
+# Jupyter table of contents (TOC) generation support for Visual Studio Code
 
   - [1. Summary](#1-summary)
   - [2. Features](#2-features)
@@ -13,30 +13,26 @@
 
 Generatation of a **table of contents** (TOC) for your Jupyter notebook in [Visual Studio Code](https://code.visualstudio.com/).
 
+Visual Studio Code has "outline" feature to navigate through the jupyter notebook markdown headers. But if this feature is not enough this extension let you to generate interactive TOC directly in jupyter notebook as a separate markdown cell.
+
 ## 2. Features 
 
-* Generate a Table of Content based on markdown titles
+* Generate a table of contents based on markdown titles
 * Update an existing TOC when generate it again
 * Support not latin headers in Jupyter notebook
 * Insert anchors both on your elements of TOC and on headers
+    * backward links from document titles to table of contents
 * Auto-saving when a TOC is generated 
 * Configurable:
     * Levels of headers to numerate and collect to TOC
     * Numbering your table of contents and headers
     * Anchoring you table of contents and headers
     * Display name for the table of contents
-    * Save your document when table of content generated
+    * Save your document when table of contents generated
 
 ## 3. Example
 
-Without numbering for 1-3 header levels
-<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/nonumbering.png" alt="pic of TOC" width="400px"></p>
 
-With numbering for 1-6 header levels
-<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/numbering.png" alt="pic of numbered TOC" width="400px"></p>
-
-Without anchoring for 1-6 header levels
-<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/noanchor.png" alt="pic of non interactive TOC" width="400px"></p>
 
 ## 4. Usage
 
@@ -45,21 +41,23 @@ Without anchoring for 1-6 header levels
 
 Adding new or updating existing Table of contents:
 
-* Type "**Generate**"
-* Choose "**Juptyer: Generate TOC for Jupyter notebook**"
+* Start typing "**Generate**"
+* Choose "**Juptyer: Generate table of contents**"
   * New cell with TOC for notebook will be inserted before current selected cell or existing TOC will be updated
 
 Removing Table of contents
 
-* Type "**Remove**"
-* Choose "**Juptyer: Remove TOC from Jupyter notebook**"
-  * Notebook cell with table of content will be removed from notebook. All made formatting of headers such as numbering and anchors will be removed too.
+* Start typing "**Remove**"
+* Choose "**Juptyer: Remove table of contents**"
+  * Notebook cell with table of contents will be removed from notebook. All made formatting of headers such as numbering and anchors will be removed too.
+
+These commands are also aviable as Editor Toolbar menu items under the overflow menu (...)
 
 ### 4.1. Some details and tips
 
 1. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
-2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section.
-3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation of the table of contents in this document.
+2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section. Or choose this extension in Extension browser (`Ctrl+Shift+X`), than press `Manage` button, choose `Extension settings`.
+3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation/update of the table of contents in this document.
 4. **NOTE**: When generating table of contents with numbering and/or anchors the headers in the document cells are being edited. Before generate/update or remove the table of contents from notebook the extension clears all headers from numbering and anchors. So if some original titles had numbering and/or whole title anchors, then such numbering and/or anchors will be lost. But if you have links on some words of headers they will be saved. 
 **For example:**
 - `# [My header links to some where](#http://some/where)` 
@@ -80,7 +78,8 @@ Key|Expected Values|Default|Description
 
 ## 6. Known issues and roadmap
 
-1. Anchor navigation from TOC to headers and back does not work on github due to its custom jupyter notebook renderer, but with native `jupyter notebook` it works well.
+1. Anchor navigation from TOC to headers and back does not work on github due to its jupyter notebook renderer, but with native `jupyter notebook` it works well.
+2. TODO: To make backward links from titles to table of contents optional.
 
 ## 6. About
 

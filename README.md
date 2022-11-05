@@ -43,7 +43,7 @@ Visual Studio Code has "outline" feature to navigate through the jupyter noteboo
 
 ## 4. Usage
 
-All commands aviable as **Editor Toolbar menu** items under the overflow menu **(...)**
+All commands are available as **Editor Toolbar menu** items under the overflow menu **(...)**
 
 Also you can use **comand palette**
 

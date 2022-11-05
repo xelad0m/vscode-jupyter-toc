@@ -30,13 +30,13 @@ Generatation of a **table of contents** (TOC) for your Jupyter notebook in [Visu
 ## 3. Example
 
 Without numbering for 1-3 header levels
-<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/nonumbering.png" alt="pic of TOC" width="300px"></p>
+<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/nonumbering.png" alt="pic of TOC" width="300px"></p>
 
 With numbering for 1-6 header levels
-<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/numbering.png" alt="pic of numbered TOC" width="300px"></p>
+<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/numbering.png" alt="pic of numbered TOC" width="300px"></p>
 
 Without anchoring for 1-6 header levels
-<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/noanchor.png" alt="pic of non interactive TOC" width="300px"></p>
+<p><img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/noanchor.png" alt="pic of non interactive TOC" width="300px"></p>
 
 ## 4. Usage
 

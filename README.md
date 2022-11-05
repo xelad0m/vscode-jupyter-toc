@@ -32,13 +32,13 @@ Visual Studio Code has "outline" feature to navigate through the jupyter noteboo
 
 ## 3. Example
 
-**Generating** Table of contents
+**Generating** Table of contents    
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/generate.gif" alt="generate" width="700px">
 
-**Removing** table of contents
+**Removing** table of contents    
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/remove.gif" alt="generate" width="700px">
 
-**Configuring** and **updating** table of contents (e.g. changing levels of TOC from defalut 1-6 to 1-4)
+**Configuring** and **updating** table of contents (e.g. changing levels of TOC from defalut 1-6 to 1-4)    
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/config.gif" alt="generate" width="700px">
 
 ## 4. Usage

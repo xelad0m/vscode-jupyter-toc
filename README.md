@@ -62,7 +62,9 @@ Key|Expected Values|Default|Description
 
 ## 6. About
 
-This extension is based on [Markdown TOC](https://marketplace.visualstudio.com/items?itemName=joffreykern.markdown-toc) Visual Studio Code extension from [Joffrey Kern](https://github.com/joffreykern/vscode-markdown-toc) and [Kiran Rao](https://github.com/curioustechizen/vscode-markdown-toc).
+This extension is based on [Markdown TOC](https://marketplace.visualstudio.com/items?itemName=joffreykern.markdown-toc) Visual Studio Code extension by [Joffrey Kern](https://github.com/joffreykern/vscode-markdown-toc) and [Kiran Rao](https://github.com/curioustechizen/vscode-markdown-toc).
+
+Special thanks to [Your First Extension](https://code.visualstudio.com/api/get-started/your-first-extension) manual.
 
 ## 7. Contributing
 

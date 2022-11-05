@@ -32,9 +32,20 @@ Visual Studio Code has "outline" feature to navigate through the jupyter noteboo
 
 ## 3. Example
 
+**Generating** Table of contents
+<img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/generate.gif" alt="generate" width="700px">
 
+**Removing** table of contents
+<img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/remove.gif" alt="generate" width="700px">
+
+**Configuring** and **updating** table of contents (e.g. changing levels of TOC from defalut 1-6 to 1-4)
+<img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/config.gif" alt="generate" width="700px">
 
 ## 4. Usage
+
+All commands aviable as **Editor Toolbar menu** items under the overflow menu **(...)**
+
+Also you can use **comand palette**
 
 * Open any Jupyter notebook
 * Open the command palette (`Ctrl+Shift+P`)
@@ -50,8 +61,6 @@ Removing Table of contents
 * Start typing "**Remove**"
 * Choose "**Juptyer: Remove table of contents**"
   * Notebook cell with table of contents will be removed from notebook. All made formatting of headers such as numbering and anchors will be removed too.
-
-These commands are also aviable as Editor Toolbar menu items under the overflow menu (...)
 
 ### 4.1. Some details and tips
 

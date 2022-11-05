@@ -289,8 +289,8 @@ export class TocGenerator {
 						}
 						
 						// Remove numbering in the title
-						if (lineText.match(/\#+\s([0-9]+\.)+/) != null) {
-							lineText = lineText.replace(/([0-9]+\.)+\s/, "");
+						if (lineText.match(/\#+\s*([0-9]+\.*)+\s*/) != null) {			// is there some numbering in header?
+							lineText = lineText.replace(/\s*([0-9]+\.*)+\s*/, " ");		// eliminate first numbering
 						}
 						
 						// Remove hashtag
@@ -303,7 +303,7 @@ export class TocGenerator {
 
 						// Unlink title if it in markdown link: [title](#id)
 						if (title.startsWith("[")) {
-							title = title.slice(1).replace(/\].*/, "");
+							title = title.slice(1).replace(/\].*/, "");	// takes from "[" and removes from "]" to the end
 						}
 				
 						let header = new Header(

@@ -11,19 +11,19 @@ A [Visual Studio Code](https://code.visualstudio.com/) extension that generates 
 * Support not latin headers in Jupyter notebook
 * Insert anchors both on your elements of TOC and on headers
 * Auto-saving when a TOC is generated 
-* Configurable generation of
+* Configurable:
+    * Levels of headers to numerate and collect to TOC
     * Numbering your table of contents and headers
     * Anchoring you table of contents and headers
-    * Levels of headers to numerate and collect to TOC
     * Save your document when table of content generated
 
 ## 3. Example
 
 Without numbering for 1-3 header levels
-<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/blob/main/images/nonumbering.png" alt="numbered toc" width="300px"></p>
+<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/nonumbering.png" alt="pic of TOC" width="300px"></p>
 
 With numbering for 1-6 header levels
-<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/blob/main/images/numbering.png" alt="numbered toc" width="300px"></p>
+<p><img src="https://github.com/xelad0m/vscode-jupyter-toc/raw/main/images/numbering.png" alt="pic of numbered TOC" width="300px"></p>
 
 ## 4. Usage
 
@@ -47,7 +47,7 @@ Removing Table of contents
 1. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
 2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section.
 3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation of the table of contents in this document.
-4. **NOTE**: When generating table of contents with numbering and/or anchors the headers in the document cells are being edited. The table of contents removal command tries to return the headings to their original appearance. But if some original titles already had numbering and/or anchors, then such numbering and/or anchors will be lost.
+4. **NOTE**: When generating table of contents with numbering and/or anchors the headers in the document cells are being edited. Before generate/update or remove the table of contents from notebook extension clears all headers from numbering and anchors. So if some original titles before first use of extension already had numbering and/or anchors, then such numbering and/or anchors will be lost.
 
 ## 5. Supported settings
 

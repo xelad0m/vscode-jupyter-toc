@@ -73,7 +73,7 @@
       "title": "Jupyter TOC",
       "displayName": "Jupyter TOC",
       "properties": {
-        "jupyter.toc.tocHeader": {
+        "jupyter.toc.tableOfContentsHeader": {
           "type": "string",
           "default": "**Table of contents**",
           "markdownDescription": "**Defines the name for the table of contents**",
@@ -82,19 +82,47 @@
         "jupyter.toc.autoSave": {
           "type": "boolean",
           "default": false,
-          "description": "Determines whether to automatically save the notebook after creating, updating, or deleting the table of contents.",
+          "markdownDescription": "Automatically save the notebook after creating, updating, or deleting the table of contents\t\n\nDisabled by default to let VS Code complitly control documents saving",
           "scope": "resource"
         },
         "jupyter.toc.numbering": {
           "type": "boolean",
           "default": false,
-          "description": "Determines whether the headers need to be numbered. Valid only when there is no table of contents in document yet",
+          "markdownDescription": "Enumerate headers of the jupyther notebook\t\n\nOption is overridable by TOC cell options\t\n\nIf you allready have enumerated titles such numbering will be replaced",
           "scope": "resource"
         },
         "jupyter.toc.anchors": {
           "type": "boolean",
           "default": true,
-          "description": "Determines whether the table of contents elements should refer to the headings in the document. Valid only when there is no table of contents in document yet",
+          "markdownDescription": "Add links from the table of contents elements to the header in the document\t\n\nOption is overridable by TOC cell options",
+          "scope": "resource"
+        },
+        "jupyter.toc.reverseAnchorsStyle": {
+          "type": "string",
+          "default": "title",
+          "enum": [
+            "title",
+            "arrow1",
+            "arrow2",
+            "arrow3",
+            "arrow4",
+            "custom"
+          ],
+          "markdownEnumDescriptions": [
+            "### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nUsing whole title as reverse link\n\nIf some of titles allready have links it will be\n### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nor\n### Title [with](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) links [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)",
+            "### Title [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding arrow up reverse link after title",
+            "### [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) Title\nAdding arrow up reverse link before title",
+            "### Title [&#9650;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding arrow up reverse link after title",
+            "### [&#9650;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) Title\nAdding arrow up reverse link before title",
+            "### Title [&#9757;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding custom symbol for reverse link"
+          ],
+          "markdownDescription": "Style of reverse links from notebook headers to the table of contents.\t\n\nThis option works when `#jupyter.toc.anchors#` is enabled",
+          "scope": "resource"
+        },
+        "jupyter.toc.customReverseAnchor": {
+          "type": "string",
+          "default": "&#9757;",
+          "markdownDescription": "Defines anchor symbol or string to use as link from headers to the table of contents.\t\n\nFor example by default it is &#9757; (finger up)\t\n\nThis option works when `#jupyter.toc.anchors#` is enabled and `#jupyter.toc.reverseAnchorsStyle#` set to `custom`",
           "scope": "resource"
         },
         "jupyter.toc.minHeaderLevel": {
@@ -108,7 +136,7 @@
             5,
             6
           ],
-          "description": "Defines the minimum level of the header to be included in the table of contents. Valid only when there is no table of contents in document yet",
+          "markdownDescription": "Defines the minimum level of the notebook header to be included in the table of contents\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         },
         "jupyter.toc.maxHeaderLevel": {
@@ -122,7 +150,7 @@
             5,
             6
           ],
-          "description": "Defines the minimum level of the header to be included in the table of contents. Valid only when there is no table of contents in document yet",
+          "markdownDescription": "Defines the minimum level of the notebook header to be included in the table of contents\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         }
       }

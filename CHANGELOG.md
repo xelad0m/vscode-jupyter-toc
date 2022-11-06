@@ -1,6 +1,10 @@
 # Change Log
 
-## [Unreleased]
+## v0.0.3 (6 November 2022)
+
+### Added
+
+- Ajustable reverse links from title to the table of contents 
 
 ## v0.0.2 (6 November 2022)
 

@@ -146,26 +146,12 @@ export class TocGenerator {
                                 isCellUpdate = true;
                                 
                                 let ht = "#".repeat(header.origLevel);
-                                let anchor = `<a id='${header.anchor}'></a>`;
-                                let title = header.title;
 
-                                if (this._config.Anchor) {
-                                    // if orig header contains links we add empty anchor to TOC so as not to break these links
-                                    title = (header.isContainLinks) ? `${title}[](#toc0_)` : `[${title}](#toc0_)`;
-                                }
-
-                                let lineText = "";
-                                if (this._config.Numbering && this._config.Anchor) {
-                                    lineText = `${ht} ${header.numberingString} ${anchor}${title}`;
-                                } else if (this._config.Anchor) {
-                                    lineText = `${ht} ${anchor}${title}`;
-                                } else if (this._config.Numbering) {
-                                    lineText = `${ht} ${header.numberingString} ${title}`;
-                                } else {
-                                    lineText = `${ht} ${title}`;
-                                }
-                                      
-                                docArray[header.lineNumber] = lineText;
+                                // anchor header
+                                let title = this.anchorHeader(header);
+                                // number header
+                                title = (this._config.Numbering) ? `${ht} ${header.numberingString} ${title}` : `${ht} ${title}`;
+                                docArray[header.lineNumber] = title;                
                             }
                         });	
                         
@@ -197,6 +183,40 @@ export class TocGenerator {
                 
             return Promise.resolve();
         }
+    }
+
+    private anchorHeader(header: Header): string {
+        let title = header.title;
+
+        if (this._config.Anchor) {
+            let anchor = `<a id='${header.anchor}'></a>`;
+
+            switch ( this._config.AnchorStyle ) {
+                case "arrow1":
+                    title = `${anchor}${title} [&#8593;](#toc0_)`;
+                    break;
+                case "arrow2":
+                    title = ` [&#8593;](#toc0_) ${anchor}${title}`;
+                    break;
+                case "arrow3":
+                    title = `${anchor}${title} [&#9650;](#toc0_)`;
+                    break;
+                case "arrow4":
+                    title = ` [&#9650;](#toc0_) ${anchor}${title}`;
+                    break;
+                case "title":
+                    title = (header.isContainLinks) ? `${anchor}${title} [&#8593;](#toc0_)` : `${anchor}[${title}](#toc0_)`;
+                    break;
+                case "custom":
+                    title = `${anchor}${title} [${this._config.CustomAnchor}](#toc0_)`;
+                    break;   
+                default: 
+                    title = `${anchor}${title} [&#8593;](#toc0_)`;
+                    break;
+            }
+        }
+
+        return title;
     }
 
     private async deleteCell(uri: vscode.Uri, cellNum: number) {
@@ -293,7 +313,7 @@ export class TocGenerator {
                             continue
                         }
                         
-                        let [title, cleanTitle, isContainLinks] = normalizeHeader(lineText, headerLevel, this._endAnchor);
+                        let [title, cleanTitle, isContainLinks] = this.normalizeHeader(lineText, headerLevel, this._endAnchor);
                 
                         let header = new Header(
                             headerLevel,
@@ -366,7 +386,8 @@ export class TocGenerator {
                 let indent = "  ".repeat(header.level - 1);
                 
                 // we want to push to anchored TOC the header without links
-                let title = (this._config.Anchor && header.isContainLinks) ? header.cleanTitle : header.title;	
+                // let title = (this._config.Anchor && header.isContainLinks) ? header.cleanTitle : header.title;	
+                let title = header.cleanTitle;	
 
                 if (this._config.Numbering && this._config.Anchor) {
                     tocLine = `${indent}- ${header.numberingString} [${title}](#${header.anchor})`;
@@ -389,6 +410,54 @@ export class TocGenerator {
         tocSummary = tocSummary.concat("\n" + this._tocEndLine);
     
         return tocSummary;
+    }
+
+    /**
+     * 
+     * @returns [ cleaned from numbering and anchor header sting (to keep in Cells), 
+     * 			  cleaned from links title (to push to TOC),
+     * 			  flag whether string contain other links ]
+     */
+    public normalizeHeader(validHeader: string, 
+                           headerLevel: number, 
+                           endAnchor: string): [string, string, boolean] {
+        let isContainLinks = false;
+
+        // remove numbering
+        if (validHeader.match(/\#+\s*([0-9]+\.*)+\s*/) != null) {			// is there some numbering in header after #?
+            validHeader = validHeader.replace(/\s*([0-9]+\.*)+\s*/, " ");	// eliminate first numbering, keep if numbers in title
+        }
+        
+        // remove hashtag
+        let title: string = validHeader.substring(headerLevel + 1);
+
+        // remove anchor
+        if (title.indexOf(endAnchor) > 0) {
+            title = title.substring(title.indexOf(endAnchor)  + endAnchor.length);
+        }
+
+        // remove TOC link
+        const reTocLink = /\[(?<name>[^\[\]]*)\]\(#toc0_\)/;                // any #toc0_ link including empty
+        if (reTocLink.test(title)) {
+            let anchors = ["&#8593;", "&#9650;", this._config.CustomAnchor]
+            
+            let m = title.match(reTocLink);
+            if (m != null) {
+                let link = m[0];
+                let name = m[1];
+                title = (anchors.indexOf(name) < 0) ? name : title.replace(link, "");
+            }
+        }
+
+        // remove other title links
+        const reLink = /\[(?<name>.+?)\]\(.+?\)/;
+        let cleanTitle = title;
+        if (reLink.test(title)) {
+            isContainLinks = true;
+            cleanTitle = removeLinks(title);
+        }
+
+        return ([title, cleanTitle, isContainLinks]);
     }
 }
   
@@ -424,53 +493,6 @@ function getHeaderLevel(line: string, keepEmpty: boolean = false): number {
     return hTag.length;
 }
 
-/**
- * 
- * @param validHeader A header string
- * @param headerLevel
- * @returns [ cleaned from numbering and TOC anchor header sting (to keep in Cells), 
- * 			  cleaned from internal links title (to push to TOC),
- * 			  flag whether string contain other links/anchors ]
- */
-function normalizeHeader(validHeader: string, 
-                         headerLevel: number, 
-                         endAnchor: string): [string, string, boolean] {
-    let isContainLinks = false;
-
-    // Remove numbering in the title
-    if (validHeader.match(/\#+\s*([0-9]+\.*)+\s*/) != null) {			// is there some numbering in header after #?
-        validHeader = validHeader.replace(/\s*([0-9]+\.*)+\s*/, " ");	// eliminate first numbering, keep if numbers in title
-    }
-                        
-    // Remove hashtag
-    let title: string = validHeader.substring(headerLevel + 1);
-
-    // Remove anchor in the title
-    if (title.indexOf(endAnchor) > 0) {
-        title = title.substring(title.indexOf(endAnchor)  + endAnchor.length);
-    }
-
-    // Unlink title if it is whole in markdown link: [title](#id) 
-    // We dont expect nested links in such titles, so its OK way
-    if (title.startsWith("[")) {
-        title = title.slice(1).replace(/\].*/, "");			// takes from "[" and removes from "]" to the end
-    }
-
-    const reEmptyLink = /\[\]\(.+?\)/; 						// we use empty link to anchor headers with other links
-    if (reEmptyLink.test(title)) {
-        isContainLinks = true;
-        title = title.replace(reEmptyLink, "");				// we suppose there is only one empty link
-    }
-    
-    const reLink = /\[(?<name>.+?)\]\(.+?\)/;
-    let cleanTitle = title;
-    if (reLink.test(title)) {
-        isContainLinks = true;
-        cleanTitle = removeLinks(title);
-    }
-
-    return ([title, cleanTitle, isContainLinks]);
-}
 
 function removeLinks(line: string): string {
     const reLink = /\[(?<name>.+?)\]\(.+?\)/;
@@ -478,8 +500,8 @@ function removeLinks(line: string): string {
         let m = line.match(reLink);
         if (m != null) {
             let link = m[0];
-            let sub = m[1];
-            line = line.slice(0, m.index) + line.slice(m.index).replace(link, sub);
+            let name = m[1];
+            line = line.slice(0, m.index) + line.slice(m.index).replace(link, name);
         } else {
             break
         }
@@ -488,37 +510,40 @@ function removeLinks(line: string): string {
 }
 
 class TocConfiguration {
+    public TocHeader: string;
     public Numbering: boolean;
     public Anchor: boolean;
-    public AutoSave: boolean;
+    public AnchorStyle: string;
+    public CustomAnchor: string;
     public MinLevel: number;
     public MaxLevel: number;
-  
+    public AutoSave: boolean;
+
     public StartLine: string = "<!-- vscode-jupyter-toc-config";
     public EndLine: string = "/vscode-jupyter-toc-config -->";
-    public TocHeader: string;
+
     public TocCellNum?: number;
   
     private _numberingKey: string 	= "numbering=";
     private _anchorKey: string 		= "anchor=";
-    private _autoSaveKey: string 	= "autoSave=";
     private _minLevelKey: string 	= "minLevel=";
     private _maxLevelKey: string 	= "maxLevel=";
+    // private _autoSaveKey: string 	= "autoSave=";
   
     constructor() {
-            this.Numbering = vscode.workspace.getConfiguration('jupyter.toc').get('numbering', true);
-            this.Anchor = vscode.workspace.getConfiguration('jupyter.toc').get('anchors', true);
-            this.AutoSave = vscode.workspace.getConfiguration('jupyter.toc').get('autoSave', true);
-            this.MinLevel = vscode.workspace.getConfiguration('jupyter.toc').get('minHeaderLevel', 1);
-            this.MaxLevel = vscode.workspace.getConfiguration('jupyter.toc').get('maxHeaderLevel', 6);
-            this.TocHeader = vscode.workspace.getConfiguration('jupyter.toc').get('tocHeader', "**Table of contents**");
+        this.TocHeader = vscode.workspace.getConfiguration('jupyter.toc').get('tableOfContentsHeader', "**Table of contents**");
+        this.Numbering = vscode.workspace.getConfiguration('jupyter.toc').get('numbering', false);
+        this.Anchor = vscode.workspace.getConfiguration('jupyter.toc').get('anchors', true);
+        this.AnchorStyle = vscode.workspace.getConfiguration('jupyter.toc').get('reverseAnchorsStyle', "arrow1");
+        this.CustomAnchor = vscode.workspace.getConfiguration('jupyter.toc').get('customReverseAnchor', "&#9757;");
+        this.MinLevel = vscode.workspace.getConfiguration('jupyter.toc').get('minHeaderLevel', 1);
+        this.MaxLevel = vscode.workspace.getConfiguration('jupyter.toc').get('maxHeaderLevel', 6);
+        this.AutoSave = vscode.workspace.getConfiguration('jupyter.toc').get('autoSave', false);
     }
   
     public Read(lineText: string) {
         if(this.readable(lineText, this._numberingKey)) {
             this.Numbering = this.toBoolean(lineText, this._numberingKey);
-        } else if (this.readable(lineText, this._autoSaveKey)) {
-            this.AutoSave = this.toBoolean(lineText, this._autoSaveKey);
         } else if (this.readable(lineText, this._anchorKey)) {
             this.Anchor = this.toBoolean(lineText, this._anchorKey);
         } else if (this.readable(lineText, this._minLevelKey)) {
@@ -527,17 +552,19 @@ class TocConfiguration {
         } else if (this.readable(lineText, this._maxLevelKey)) {
             let num = this.toNumber(lineText, this._maxLevelKey);
             this.MaxLevel = (num > MD_MAX_HEADERS_LEVEL) ? MD_MAX_HEADERS_LEVEL : num;
-          }
+        // } else if (this.readable(lineText, this._autoSaveKey)) {
+        //     this.AutoSave = this.toBoolean(lineText, this._autoSaveKey);
+        }
     }
   
     public Build() : string {
         let configuration : string = this.StartLine;
         configuration = configuration.concat("\n\t" + this._numberingKey + this.Numbering);
-        // configuration = configuration.concat("\n\t" + this._autoSaveKey + this.AutoSave);
         configuration = configuration.concat("\n\t" + this._anchorKey + this.Anchor);
         configuration = configuration.concat("\n\t" + this._minLevelKey + this.MinLevel);
         configuration = configuration.concat("\n\t" + this._maxLevelKey + this.MaxLevel);
         configuration = configuration.concat("\n\t" + this.EndLine);
+        // configuration = configuration.concat("\n\t" + this._autoSaveKey + this.AutoSave);
     
         return configuration;
     }

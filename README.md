@@ -105,7 +105,7 @@ You can choose styles of links from titles to the table of contents which looks 
 
 ## 6. Known issues
 
-1. Anchor navigation from TOC to headers and back does not work on github due to its stange rendering of local jupyter notebook links, but with native `jupyter notebook`/`jupyter-lab` it works well.
+1. Anchor navigation from TOC to headers and back does not work on github due to its strange rendering of local jupyter notebook links, but with native `jupyter notebook`/`jupyter-lab` it works well.
 2. Due to complicated VS Code editor scrolling functionality newly inserted or updated TOC could scroll not exactly to titles. Reopening of the document solves the problem, links between TOC and titles will work exactly as expected.
 
 ## 7. About

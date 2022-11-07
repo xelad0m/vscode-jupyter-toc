@@ -1,7 +1,7 @@
 {
   "name": "jupyter-toc",
   "displayName": "Jupyter TOC",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate Table of Contents for Jupyter notebooks.",
   "publisher": "xelad0m",
   "author": {
@@ -91,6 +91,12 @@
           "markdownDescription": "Enumerate headers of the jupyther notebook\t\n\nOption is overridable by TOC cell options\t\n\nIf you allready have enumerated titles such numbering will be replaced",
           "scope": "resource"
         },
+        "jupyter.toc.flat": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Flat table of contents without intendentions and list markers\t\n\nIt will better looks when use it with `#jupyter.toc.numbering#` is enabled\t\n\nOption is overridable by TOC cell options",
+          "scope": "resource"
+        },
         "jupyter.toc.anchors": {
           "type": "boolean",
           "default": true,
@@ -109,7 +115,7 @@
             "custom"
           ],
           "markdownEnumDescriptions": [
-            "### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nUsing whole title as reverse link\n\nIf some of titles allready have links it will be\n### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nor\n### Title [with](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) links [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)",
+            "### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nUsing whole title as reverse link\n\nIf some of titles allready have links such titles will be displayed with `arrow1` style, like\n### [Title](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nor\n### Title [with](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) links [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)",
             "### Title [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding arrow up reverse link after title",
             "### [&#8593;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc) Title\nAdding arrow up reverse link before title",
             "### Title [&#9650;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)\nAdding arrow up reverse link after title",

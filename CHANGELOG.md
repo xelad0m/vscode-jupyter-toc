@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## v0.1.1 (8 November 2022)
+
+### Added
+
+- Flat table of contents option
+ 
 ## v0.1.0 (7 November 2022)
 
 ### Fixed

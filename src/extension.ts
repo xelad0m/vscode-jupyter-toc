@@ -381,20 +381,23 @@ export class TocGenerator {
         
           headers.ForEach((header, idx) => {
             if (header != undefined) {
-                let tocLine : string = "";
-                let indent = (idx == 0) ? "" : "  ".repeat(header.level - 1);    // first header never indents or it will be ugly rendered in md list
-                
-                // we want to push to anchored TOC the header without links
-                let title = header.cleanTitle;	
+                let title = header.cleanTitle;  // we want to push to anchored TOC the header without links
+                let tocLine = "";
+                let indent = "";
 
+                if (!this._config.Flat) {
+                    indent = (idx == 0) ? "" : "  ".repeat(header.level - 1);    // first header never indents or it will be ugly rendered in md list
+                    indent = indent.concat("- ");
+                }
+                
                 if (this._config.Numbering && this._config.Anchor) {
-                    tocLine = `${indent}- ${header.numberingString} [${title}](#${header.anchor})`;
+                    tocLine = `${indent}${header.numberingString} [${title}](#${header.anchor})`;
                 } else if (this._config.Anchor) {
-                    tocLine = `${indent}- [${title}](#${header.anchor})`;
+                    tocLine = `${indent}[${title}](#${header.anchor})`;
                 } else if (this._config.Numbering) {
-                    tocLine = `${indent}- ${header.numberingString} ${title}`;
+                    tocLine = `${indent}${header.numberingString} ${title}`;
                 } else {
-                    tocLine = `${indent}- ${title}`;
+                    tocLine = `${indent}${title}`;
                 }
                 
                 // finalize line
@@ -489,7 +492,6 @@ function getHeaderLevel(line: string, keepEmpty: boolean = false): number {
     return hTag.length;
 }
 
-
 function removeLinks(line: string): string {
     const reLink = /\[(?<name>.+?)\]\(.+?\)/;
     while (reLink.test(line)) {
@@ -508,6 +510,7 @@ function removeLinks(line: string): string {
 class TocConfiguration {
     public TocHeader: string;
     public Numbering: boolean;
+    public Flat: boolean;
     public Anchor: boolean;
     public AnchorStyle: string;
     public CustomAnchor: string;
@@ -515,21 +518,21 @@ class TocConfiguration {
     public MaxLevel: number;
     public AutoSave: boolean;
     public AnchorStrings: Array<string>;    // 2 hardcoded and 1 custom strings for anchors 
-
     public StartLine: string = "<!-- vscode-jupyter-toc-config";
     public EndLine: string = "/vscode-jupyter-toc-config -->";
 
-    public TocCellNum?: number;
+    public TocCellNum?: number;             // ? because we cant set it in constructor
   
     private _numberingKey: string 	= "numbering=";
     private _anchorKey: string 		= "anchor=";
+    private _flatKey: string 		= "flat=";
     private _minLevelKey: string 	= "minLevel=";
     private _maxLevelKey: string 	= "maxLevel=";
-    // private _autoSaveKey: string 	= "autoSave=";
   
     constructor() {
         this.TocHeader = vscode.workspace.getConfiguration('jupyter.toc').get('tableOfContentsHeader', "**Table of contents**");
         this.Numbering = vscode.workspace.getConfiguration('jupyter.toc').get('numbering', false);
+        this.Flat = vscode.workspace.getConfiguration('jupyter.toc').get('flat', false);
         this.Anchor = vscode.workspace.getConfiguration('jupyter.toc').get('anchors', true);
         this.AnchorStyle = vscode.workspace.getConfiguration('jupyter.toc').get('reverseAnchorsStyle', "arrow1");
         this.CustomAnchor = vscode.workspace.getConfiguration('jupyter.toc').get('customReverseAnchor', "&#9757;");
@@ -544,14 +547,14 @@ class TocConfiguration {
             this.Numbering = this.toBoolean(lineText, this._numberingKey);
         } else if (this.readable(lineText, this._anchorKey)) {
             this.Anchor = this.toBoolean(lineText, this._anchorKey);
+        } else if (this.readable(lineText, this._flatKey)) {
+            this.Flat = this.toBoolean(lineText, this._flatKey);
         } else if (this.readable(lineText, this._minLevelKey)) {
             let num = this.toNumber(lineText, this._minLevelKey);
             this.MinLevel = (num < 1) ? 1 : num;
         } else if (this.readable(lineText, this._maxLevelKey)) {
             let num = this.toNumber(lineText, this._maxLevelKey);
             this.MaxLevel = (num > MD_MAX_HEADERS_LEVEL) ? MD_MAX_HEADERS_LEVEL : num;
-        // } else if (this.readable(lineText, this._autoSaveKey)) {
-        //     this.AutoSave = this.toBoolean(lineText, this._autoSaveKey);
         }
     }
   
@@ -559,6 +562,7 @@ class TocConfiguration {
         let configuration : string = this.StartLine;
         configuration = configuration.concat("\n\t" + this._numberingKey + this.Numbering);
         configuration = configuration.concat("\n\t" + this._anchorKey + this.Anchor);
+        configuration = configuration.concat("\n\t" + this._flatKey + this.Flat);
         configuration = configuration.concat("\n\t" + this._minLevelKey + this.MinLevel);
         configuration = configuration.concat("\n\t" + this._maxLevelKey + this.MaxLevel);
         configuration = configuration.concat("\n\t" + this.EndLine);

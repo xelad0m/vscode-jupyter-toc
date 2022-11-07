@@ -24,7 +24,7 @@ Visual Studio Code has "outline" feature to navigate through the jupyter noteboo
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/remove.gif" alt="remove" width="700px">
 
 **Configuring** and **updating** table of contents, for example:
-- changing header levels to collect to TOC from 1-6 to 1-4
+- changing header levels to collect to TOC from 1-6 to 1-2
 - adding numbering
 
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/config.gif" alt="config" width="700px">

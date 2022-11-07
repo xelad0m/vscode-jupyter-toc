@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## v0.1.0 (7 November 2022)
+
+### Fixed
+
+- Some minor fixes
+
 ## v0.0.5 (7 November 2022)
 
 ### Fixed

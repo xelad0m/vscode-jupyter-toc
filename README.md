@@ -6,8 +6,8 @@
   - [4. Usage](#4-usage)
     - [4.1. Some details and tips](#41-some-details-and-tips)
   - [5. Supported settings](#5-supported-settings)
-  - [6. Known issues and roadmap](#6-known-issues-and-roadmap)
-  - [6. About](#6-about)
+  - [6. Known issues](#6-known-issues)
+  - [7. About](#7-about)
 
 ## 1. Summary 
 
@@ -108,7 +108,7 @@ You can choose styles of links from titles to the table of contents which looks 
 1. Anchor navigation from TOC to headers and back does not work on github due to its stange rendering of local jupyter notebook links, but with native `jupyter notebook`/`jupyter-lab` it works well.
 2. Due to complicated VS Code editor scrolling functionality newly inserted or updated TOC could scroll not exactly to titles. Reopening of the document solves the problem, links between TOC and titles will work exactly as expected.
 
-## 6. About
+## 7. About
 
 This extension is based on [Markdown TOC](https://marketplace.visualstudio.com/items?itemName=joffreykern.markdown-toc) Visual Studio Code extension by [Joffrey Kern](https://github.com/joffreykern/vscode-markdown-toc) and [Kiran Rao](https://github.com/curioustechizen/vscode-markdown-toc).
 

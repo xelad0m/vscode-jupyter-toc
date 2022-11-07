@@ -1,5 +1,12 @@
 # Change Log
 
+## [Unreleased]
+
+### Fixed
+
+- More precise processing of some rare specific header variants
+- Inaccuracies in README.md and option descriptions
+
 ## v0.0.3 (6 November 2022)
 
 ### Added

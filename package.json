@@ -1,7 +1,7 @@
 {
   "name": "jupyter-toc",
   "displayName": "Jupyter TOC",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Generate Table of Contents for Jupyter notebooks.",
   "publisher": "xelad0m",
   "author": {
@@ -94,7 +94,7 @@
         "jupyter.toc.anchors": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Add links from the table of contents elements to the header in the document\t\n\nOption is overridable by TOC cell options",
+          "markdownDescription": "Add links from the table of contents elements to the headers in the document\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         },
         "jupyter.toc.reverseAnchorsStyle": {
@@ -136,7 +136,7 @@
             5,
             6
           ],
-          "markdownDescription": "Defines the minimum level of the notebook header to be included in the table of contents\t\n\nOption is overridable by TOC cell options",
+          "markdownDescription": "Defines the **minimum** level of the notebook headers to be collected in the table of contents\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         },
         "jupyter.toc.maxHeaderLevel": {
@@ -150,7 +150,7 @@
             5,
             6
           ],
-          "markdownDescription": "Defines the minimum level of the notebook header to be included in the table of contents\t\n\nOption is overridable by TOC cell options",
+          "markdownDescription": "Defines the **maximum* level of the notebook headers to be collected in the table of contents\t\n\nOption is overridable by TOC cell options",
           "scope": "resource"
         }
       }

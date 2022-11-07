@@ -67,8 +67,8 @@ export class TocGenerator {
                     return
                 }
 
-                let lineHeaders = this.buildLineHeaders(cells);						// all valid headers in notebook as is
-                cells.forEach((cell, cellIndex)  => {					
+                let lineHeaders = this.buildLineHeaders(cells);          // all valid headers in notebook as is
+                cells.forEach((cell, cellIndex)  => {     		
                     if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
                         let docText = cell.document.getText();
                         let docArray = docText.split(/\r?\n/);
@@ -124,7 +124,7 @@ export class TocGenerator {
                 console.log(tocSummary);
                 
                 // edit headers in document
-                cells.forEach((cell, cellIndex)  => {					
+                cells.forEach((cell, cellIndex)  => {     		
                     if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
                         let docText = cell.document.getText();
                         let docArray = docText.split(/\r?\n/);
@@ -164,11 +164,11 @@ export class TocGenerator {
                 });
 
                 // insert TOC in document
-                if (this._config.TocCellNum == undefined) {								// if there is no TOC in notebook
+                if (this._config.TocCellNum == undefined) {          		// if there is no TOC in notebook
                     let selected = (editor.selection != undefined) ? editor.selection.start : 0;	// ? rarely it could be no selection
-                    this.insertCell(editor.notebook.uri, tocSummary, selected);			// insert before selected cells
+                    this.insertCell(editor.notebook.uri, tocSummary, selected);     // insert before selected cells
                     infoMessage = `Table of contents inserted as Cell #${selected}`;	
-                } else {																// else update existing TOC (first if many) by replace
+                } else {                         	// else update existing TOC (first if many) by replace
                     let tocCellNum = this._config.TocCellNum;
                     this.updateCell(editor.notebook.uri, tocSummary, tocCellNum);
                     infoMessage = `Table of contents updated at Cell #${tocCellNum}`;	
@@ -178,6 +178,7 @@ export class TocGenerator {
                 if(this._config.AutoSave) {
                     editor.notebook.save();
                 }
+                
                 vscode.window.showInformationMessage(infoMessage);
             }
                 
@@ -255,14 +256,12 @@ export class TocGenerator {
                     // Break the loop, cause we read the configuration,
                     // so if several TOC in doc we read config from the first
                     if(lineText.startsWith(tocConfiguration.EndLine)) {
-                        // this._tocEndLineNumber = lineNumber;
                         break;
                     }
             
                     if(lineText.startsWith(tocConfiguration.StartLine)) {
                         readingConfiguration = true;
                         tocConfiguration.TocCellNum = cellIndex;
-                        // this._tocStartLineNumber = lineNumber;
                         continue;
                     }
             
@@ -380,13 +379,12 @@ export class TocGenerator {
                                   this._tocDisclimer + "\n" + 
                                   "<a id='toc0_'></a>" + this._config.TocHeader + "    \n";
         
-          headers.ForEach(header => {
+          headers.ForEach((header, idx) => {
             if (header != undefined) {
                 let tocLine : string = "";
-                let indent = "  ".repeat(header.level - 1);
+                let indent = (idx == 0) ? "" : "  ".repeat(header.level - 1);    // first header never indents or it will be ugly rendered in md list
                 
                 // we want to push to anchored TOC the header without links
-                // let title = (this._config.Anchor && header.isContainLinks) ? header.cleanTitle : header.title;	
                 let title = header.cleanTitle;	
 
                 if (this._config.Numbering && this._config.Anchor) {
@@ -415,8 +413,8 @@ export class TocGenerator {
     /**
      * 
      * @returns [ cleaned from numbering and anchor header sting (to keep in Cells), 
-     * 			  cleaned from links title (to push to TOC),
-     * 			  flag whether string contain other links ]
+     *            cleaned from links title (to push to TOC),
+     *            flag whether string contain other links ]
      */
     public normalizeHeader(validHeader: string, 
                            headerLevel: number, 
@@ -424,8 +422,8 @@ export class TocGenerator {
         let isContainLinks = false;
 
         // remove numbering
-        if (validHeader.match(/\#+\s*([0-9]+\.*)+\s*/) != null) {			// is there some numbering in header after #?
-            validHeader = validHeader.replace(/\s*([0-9]+\.*)+\s*/, " ");	// eliminate first numbering, keep if numbers in title
+        if (validHeader.match(/^\#+\s+([0-9]+\.*)+\s*/) != null) {          // is there some numbering in header after '# ' at the begining of string?
+            validHeader = validHeader.replace(/\s*([0-9]+\.*)+\s*/, " ");	// del first numbering, keep if numbers further in the title
         }
         
         // remove hashtag
@@ -438,14 +436,12 @@ export class TocGenerator {
 
         // remove TOC link
         const reTocLink = /\[(?<name>[^\[\]]*)\]\(#toc0_\)/;                // any #toc0_ link including empty
-        if (reTocLink.test(title)) {
-            let anchors = ["&#8593;", "&#9650;", this._config.CustomAnchor]
-            
+        if (reTocLink.test(title)) {           
             let m = title.match(reTocLink);
             if (m != null) {
                 let link = m[0];
                 let name = m[1];
-                title = (anchors.indexOf(name) < 0) ? name : title.replace(link, "");
+                title = (this._config.AnchorStrings.indexOf(name) < 0) ? name : title.replace(link, "");
             }
         }
 
@@ -480,13 +476,13 @@ function getHeaderLevel(line: string, keepEmpty: boolean = false): number {
 
     let hTagMatch = tag.match(/\#+/);
 
-    if (hTagMatch == null) {							// overcheck if there is no #
+    if (hTagMatch == null) {          	// overcheck if there is no #
         return -1;
     } else {
         hTag = hTagMatch[0];
     }
     
-    if (hTag.length < tag.length) {						// there are other than # symbols
+    if (hTag.length < tag.length) {          // there are other than # symbols
         return -1;
     }
 
@@ -518,6 +514,7 @@ class TocConfiguration {
     public MinLevel: number;
     public MaxLevel: number;
     public AutoSave: boolean;
+    public AnchorStrings: Array<string>;    // 2 hardcoded and 1 custom strings for anchors 
 
     public StartLine: string = "<!-- vscode-jupyter-toc-config";
     public EndLine: string = "/vscode-jupyter-toc-config -->";
@@ -539,6 +536,7 @@ class TocConfiguration {
         this.MinLevel = vscode.workspace.getConfiguration('jupyter.toc').get('minHeaderLevel', 1);
         this.MaxLevel = vscode.workspace.getConfiguration('jupyter.toc').get('maxHeaderLevel', 6);
         this.AutoSave = vscode.workspace.getConfiguration('jupyter.toc').get('autoSave', false);
+        this.AnchorStrings = ["&#8593;", "&#9650;", this.CustomAnchor];
     }
   
     public Read(lineText: string) {
@@ -592,10 +590,10 @@ class TocConfiguration {
  * Header
  */
 class Header {
-    level: number;				// representation header level (relative to min level)
-    origLevel: number;			// header level as it was in original document
-    title: string;				// orig title, possible with links on some its parts
-    cleanTitle: string;			// title without links to push it in anchored TOC
+    level: number;     	// representation header level (relative to min level)
+    origLevel: number;     // header level as it was in original document
+    title: string;     	// orig title, possible with links on some its parts
+    cleanTitle: string;     // title without links to push it in anchored TOC
     isContainLinks: boolean;	// is there are links in original title flag
     numbering: Array<number>;
     numberingString: string;

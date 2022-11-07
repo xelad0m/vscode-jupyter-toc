@@ -75,6 +75,7 @@ Removing Table of contents
 1. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
 2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section. Or choose this extension in Extension browser (`Ctrl+Shift+X`), than press `Manage` button, choose `Extension settings`.
 3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation/update of the table of contents in this document.
+4. If you deleted a cell with TOC, but the headings remained with links to the TOC, just create the table of contents again and delete it with the command `Remove table of contents`. Along with the TOC, it will also remove unnecessary links from the headers.
 
 ## 5. Supported settings
 
@@ -105,8 +106,8 @@ You can choose styles of links from titles to the table of contents which looks 
 
 ## 6. Known issues
 
-1. Anchor navigation from TOC to headers and back does not work on github due to its strange rendering of local jupyter notebook links, but with native `jupyter notebook`/`jupyter-lab` it works well.
-2. Due to complicated VS Code editor scrolling functionality newly inserted or updated TOC could scroll not exactly to titles. Reopening of the document solves the problem, links between TOC and titles will work exactly as expected.
+1. Anchor navigation from TOC to headers and back does not work on github due to peculiarity of rendering of local jupyter notebook links there, but with native `jupyter notebook`/`jupyter-lab` it works well.
+2. Due to complicated VS Code notebook editor scrolling functionality newly inserted or updated TOC could scroll not exactly to titles. Reopening of the document solves the problem, links between TOC and titles will work exactly as expected.
 
 ## 7. About
 

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## v0.0.5 (7 November 2022)
+
 ### Fixed
 
 - More precise processing of some rare specific header variants

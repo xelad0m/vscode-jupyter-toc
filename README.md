@@ -23,11 +23,14 @@ Visual Studio Code has "outline" feature to navigate through the jupyter noteboo
 **Removing** table of contents    
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/remove.gif" alt="remove" width="700px">
 
-**Configuring** and **updating** table of contents, for example:
-- changing header levels to collect to TOC from 1-6 to 1-2
-- adding numbering
+**Configuring** and **updating** table of contents, for example:  
+- changing header levels to collect to TOC from 1-6 to 1-2  
+- adding numbering  
 
 <img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/config.gif" alt="config" width="700px">
+
+**Navigating** over jupyter notebook  
+<img src="https://raw.githubusercontent.com/xelad0m/vscode-jupyter-toc/main/images/navigate.gif" alt="navigate" width="700px">
 
 ## 3. Features 
 
@@ -100,10 +103,10 @@ You can choose styles of links from titles to the table of contents which looks 
 #### custom [&#9757;](https://marketplace.visualstudio.com/items?itemName=xelad0m.jupyter-toc)
 - user defined symbol or string at the end of title
 
-## 6. Known issues and roadmap
+## 6. Known issues
 
-1. Anchor navigation from TOC to headers and back does not work on github due to its stange rendering of local jupyter notebook links, but with native `jupyter notebook`/`jupyter-lab` it works exactly as expected.
-2. TODO: Compatibility with built-in Undo/Redo functionality
+1. Anchor navigation from TOC to headers and back does not work on github due to its stange rendering of local jupyter notebook links, but with native `jupyter notebook`/`jupyter-lab` it works well.
+2. Due to complicated VS Code editor scrolling functionality newly inserted or updated TOC could scroll not exactly to titles. Reopening of the document solves the problem, links between TOC and titles will work exactly as expected.
 
 ## 6. About
 

@@ -22,8 +22,6 @@ export function activate(context: vscode.ExtensionContext) {
         if (vscode.window.activeNotebookEditor?.notebook !== undefined) {
             console.log("Start building TOC...")
             new TocGenerator().process();
-        } else {
-            vscode.window.showInformationMessage('This command is only suitable for Jupyter notebooks.');
         }
         console.log("Command 'jupyter-toc.jupyterToc' executed");
     });
@@ -31,9 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
     let command2 = vscode.commands.registerCommand('jupyter-toc.jupyterUnToc', () => {
         if (vscode.window.activeNotebookEditor?.notebook !== undefined) {
             console.log("Start removing TOC...")
-            new TocGenerator().remove();
-        } else {
-            vscode.window.showInformationMessage('This command is only suitable for Jupyter notebooks.');
+            new TocGenerator().process(true);
         }
         console.log("Command 'jupyter-toc.jupyterUnToc' executed");
     });
@@ -53,67 +49,13 @@ export class TocGenerator {
     private _tocEndLine: string  = "<!-- /vscode-jupyter-toc -->";
     private _endAnchor: string = "</a>";
     
-    remove() {
-        let editor = vscode.window.activeNotebookEditor;
-
-        if (editor != undefined) {
-            let cells = editor.notebook.getCells();
-            let uri = editor.notebook.uri;
-
-            if (cells != undefined) {
-                this._config = this.readConfiguration(cells);
-                if (this._config.TocCellNum == undefined) {
-                    vscode.window.showInformationMessage('Table of contents not found in this notebook.');
-                    return
-                }
-
-                let lineHeaders = this.buildLineHeaders(cells);          // all valid headers in notebook as is
-                cells.forEach((cell, cellIndex)  => {     		
-                    if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
-                        let docText = cell.document.getText();
-                        let docArray = docText.split(/\r?\n/);
-                        let isCellUpdate = false;
-
-                        // clear all headers formatting in cell (remove numbering and anchors)
-                        lineHeaders.ForEach(header => {
-                            if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {
-                                isCellUpdate = true;
-                                let ht = "#".repeat(header.origLevel);
-                                let lineText = `${ht} ${header.title}`;
-                                docArray[header.lineNumber] = lineText;
-                            }
-                        });
-
-                        docText = docArray.join("\n");	// cell content with edits
-
-                        if (isCellUpdate && editor != undefined) {
-                            this.updateCell(editor.notebook.uri, docText, cellIndex);
-                        }
-                    }
-                });
-
-                // delete TOC cell from document
-                if (this._config.TocCellNum != undefined) {
-                    this.deleteCell(uri, this._config.TocCellNum);	
-                }
-
-                // save notebook
-                if(this._config.AutoSave) {
-                    editor.notebook.save();
-                }
-                vscode.window.showInformationMessage("Table of contents removed.");
-            }
-
-            return Promise.resolve();
-        }
-    }
-
-    process(){
+    process(remove: boolean = false){
         let editor = vscode.window.activeNotebookEditor;
         let infoMessage = "";
         
         if (editor != undefined) {
             let cells = editor.notebook.getCells();
+            let uri = editor.notebook.uri;
             
             if (cells != undefined) {
                 // prepare TOC
@@ -133,45 +75,47 @@ export class TocGenerator {
                         // clear all headers formatting in cell
                         lineHeaders.ForEach(header => {	/* edit cell content for each header in current cell */
                             if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {
-                                isCellUpdate = true;
                                 let ht = "#".repeat(header.origLevel);
                                 let lineText = `${ht} ${header.title}`;
                                 docArray[header.lineNumber] = lineText;
+                                isCellUpdate = true;
                             }
                         });
 
-                        // format filtered levels of headers
-                        headers.ForEach(header => {	/* edit cell content for each header in current cell */
-                            if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {
-                                isCellUpdate = true;
-                                
-                                let ht = "#".repeat(header.origLevel);
+                        if (!remove) { // format filtered levels of headers
+                            headers.ForEach(header => {	/* edit cell content for each header in current cell */
+                                if (header != undefined && header.cellNum != undefined && header.cellNum == cellIndex) {                                
+                                    let ht = "#".repeat(header.origLevel);
+                                    let title = this.anchorHeader(header); // anchor header
+                                    title = (this._config.Numbering) ? `${ht} ${header.numberingString} ${title}` : `${ht} ${title}`; // number header
+                                    docArray[header.lineNumber] = title;                
+                                    isCellUpdate = true;
+                                }
+                            });	
+                        }
 
-                                // anchor header
-                                let title = this.anchorHeader(header);
-                                // number header
-                                title = (this._config.Numbering) ? `${ht} ${header.numberingString} ${title}` : `${ht} ${title}`;
-                                docArray[header.lineNumber] = title;                
-                            }
-                        });	
-                        
                         docText = docArray.join("\n");	// cell content with edits
 
                         if (isCellUpdate && editor != undefined) {
-                            this.updateCell(editor.notebook.uri, docText, cellIndex);
+                            this.updateCell(uri, docText, cellIndex);
                         }
                     }
                 });
 
-                // insert TOC in document
-                if (this._config.TocCellNum == undefined) {          		// if there is no TOC in notebook
-                    let selected = (editor.selection != undefined) ? editor.selection.start : 0;	// ? rarely it could be no selection
-                    this.insertCell(editor.notebook.uri, tocSummary, selected);     // insert before selected cells
-                    infoMessage = `Table of contents inserted as Cell #${selected}`;	
-                } else {                         	// else update existing TOC (first if many) by replace
-                    let tocCellNum = this._config.TocCellNum;
-                    this.updateCell(editor.notebook.uri, tocSummary, tocCellNum);
-                    infoMessage = `Table of contents updated at Cell #${tocCellNum}`;	
+                if (remove) { // remove TOC cell
+                    if (this._config.TocCellNum != undefined) {
+                        this.deleteCell(uri, this._config.TocCellNum);	
+                    }
+                } else { // insert or update TOC cell
+                    if (this._config.TocCellNum == undefined) { // if there is no TOC in notebook
+                        let selected = (editor.selection != undefined) ? editor.selection.start : 0; // ? rarely it could be no selection
+                        this.insertCell(uri, tocSummary, selected); // insert before selected cells
+                        infoMessage = `Table of contents inserted as Cell #${selected}`;	
+                    } else { // else update existing TOC (first if many) by replace
+                        let tocCellNum = this._config.TocCellNum;
+                        this.updateCell(uri, tocSummary, tocCellNum);
+                        infoMessage = `Table of contents updated at Cell #${tocCellNum}`;	
+                    }
                 }
 
                 // save notebook

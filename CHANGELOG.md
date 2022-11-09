@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## v0.1.3 (9 November 2022)
+
+### Added 
+
+- Explicite extension dependencies
+
+### Fixed
+
+- Some minor fixes
+
 ## v0.1.1 (8 November 2022)
 
 ### Added

@@ -58,13 +58,13 @@ Also you can use **comand palette**
 * Open any Jupyter notebook
 * Open the command palette (`Ctrl+Shift+P`)
 
-Adding new or updating existing Table of contents:
+Adding new or updating existing table of contents:
 
 * Start typing "**Generate**"
 * Choose "**Jupyter: Generate table of contents**"
   * New cell with TOC for notebook will be inserted before current selected cell or existing TOC will be updated
 
-Removing Table of contents
+Removing table of contents:
 
 * Start typing "**Remove**"
 * Choose "**Jupyter: Remove table of contents**"
@@ -75,7 +75,7 @@ Removing Table of contents
 1. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
 2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section. Or choose this extension in Extension browser (`Ctrl+Shift+X`), than press `Manage` button, choose `Extension settings`.
 3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation/update of the table of contents in this document.
-4. If you deleted a cell with TOC, but the headings remained with links to the TOC, just create the table of contents again and delete it with the command `Remove table of contents`. Along with the TOC, it will also remove unnecessary links from the headers.
+4. If you deleted a cell with TOC, but the headings remained with links to the TOC, just use command `Remove table of contents`. It will remove unnecessary links from the headers.
 
 ## 5. Supported settings
 

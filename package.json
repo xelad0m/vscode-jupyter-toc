@@ -1,8 +1,8 @@
 {
   "name": "jupyter-toc",
   "displayName": "Jupyter TOC",
-  "version": "0.1.1",
-  "description": "Generate Table of Contents for Jupyter notebooks.",
+  "version": "0.1.3",
+  "description": "Generate table of contents for Jupyter notebooks.",
   "publisher": "xelad0m",
   "author": {
     "name": "xelad0m"
@@ -10,6 +10,9 @@
   "engines": {
     "vscode": "^1.72.0"
   },
+  "extensionDependencies": [
+    "ms-toolsai.jupyter"
+  ],
   "categories": [
     "Notebooks",
     "Formatters",
@@ -59,13 +62,23 @@
       "editor/title": [
         {
           "command": "jupyter-toc.jupyterToc",
-          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "when": "notebookEditorFocused && isWorkspaceTrusted",
           "group": "1_run@0"
         },
         {
           "command": "jupyter-toc.jupyterUnToc",
-          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
+          "when": "notebookEditorFocused && isWorkspaceTrusted",
           "group": "1_run@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "jupyter-toc.jupyterToc",
+          "when": "notebookEditorFocused && isWorkspaceTrusted"
+        },
+        {
+          "command": "jupyter-toc.jupyterUnToc",
+          "when": "notebookEditorFocused && isWorkspaceTrusted"
         }
       ]
     },

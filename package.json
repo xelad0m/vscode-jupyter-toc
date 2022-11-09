@@ -62,23 +62,23 @@
       "editor/title": [
         {
           "command": "jupyter-toc.jupyterToc",
-          "when": "notebookEditorFocused && isWorkspaceTrusted",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
           "group": "1_run@0"
         },
         {
           "command": "jupyter-toc.jupyterUnToc",
-          "when": "notebookEditorFocused && isWorkspaceTrusted",
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted",
           "group": "1_run@1"
         }
       ],
       "commandPalette": [
         {
           "command": "jupyter-toc.jupyterToc",
-          "when": "notebookEditorFocused && isWorkspaceTrusted"
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
         },
         {
           "command": "jupyter-toc.jupyterUnToc",
-          "when": "notebookEditorFocused && isWorkspaceTrusted"
+          "when": "notebookType == 'jupyter-notebook' && isWorkspaceTrusted"
         }
       ]
     },

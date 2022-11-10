@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## v0.1.5 (10 November 2022)
+
+### Removed 
+
+- Explicite extension dependencies. This is not necessary, everything works without `ms-toolsai.jupyter` 
+
 ## v0.1.3 (9 November 2022)
 
 ### Added 

@@ -10,9 +10,6 @@
   "engines": {
     "vscode": "^1.72.0"
   },
-  "extensionDependencies": [
-    "ms-toolsai.jupyter"
-  ],
   "categories": [
     "Notebooks",
     "Formatters",

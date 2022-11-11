@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### TODO
+
+- [ ] Preserving the name of TOC if it was customized
+- [ ] Optional line separator for TOC
+
 ## v0.1.5 (10 November 2022)
 
 ### Removed 

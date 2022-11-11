@@ -4,6 +4,7 @@
 
 ### TODO
 
+- [ ] Recognition of date at the begining of title
 - [ ] Preserving the name of TOC if it was customized
 - [ ] Optional line separator for TOC
 

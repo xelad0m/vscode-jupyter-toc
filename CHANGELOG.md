@@ -8,6 +8,7 @@
     - It means updating only dot separated numbering of title, preserving all other numbers in title
 - [ ] Preserving the name of TOC if it was customized
 - [ ] Optional line separator for TOC and other beautifizers
+- [ ] Figure out how vscode scrolling works for precise navigation
 
 ## v0.1.5 (10 November 2022)
 

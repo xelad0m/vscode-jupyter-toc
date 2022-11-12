@@ -369,7 +369,7 @@ export class TocGenerator {
         let isContainLinks = false;
 
         // remove numbering
-        if (validHeader.match(/^\#+\s+([0-9]+\.*)+\s*/) != null) {          // is there some numbering in header after '# ' at the begining of string?
+        if (validHeader.match(/^\#+\s+([0-9]+\.+)+\s*/) != null) {          // is there some numbering in header after '# ' at the begining of string?
             validHeader = validHeader.replace(/\s*([0-9]+\.*)+\s*/, " ");	// del first numbering, keep if numbers further in the title
         }
         

@@ -4,9 +4,10 @@
 
 ### TODO
 
-- [ ] Recognition of date at the begining of title
+- [x] Correct processing of date-like numbers at the begining of title
+    - It means updating only dot separated numbering of title, preserving all other numbers in title
 - [ ] Preserving the name of TOC if it was customized
-- [ ] Optional line separator for TOC
+- [ ] Optional line separator for TOC and other beautifizers
 
 ## v0.1.5 (10 November 2022)
 

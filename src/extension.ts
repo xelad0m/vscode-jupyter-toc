@@ -189,6 +189,7 @@ export class TocGenerator {
     readConfiguration(cells: vscode.NotebookCell[]) : TocConfiguration {
         let tocConfiguration: TocConfiguration = new TocConfiguration();
         let readingConfiguration: boolean = false;
+        let readingToc: boolean = false;
         cells.forEach((cell, cellIndex)  => {
             if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
                 let docText = cell.document.getText();
@@ -202,13 +203,23 @@ export class TocGenerator {
                     if(lineText.startsWith(tocConfiguration.EndLine)) {
                         break;
                     }
-            
+
+                    if(lineText.startsWith(this._tocStartLine)) {
+                        readingToc = true;
+                    }
+                    
+                    if (readingToc && !readingConfiguration) {   /* preserve modified header of Toc */
+                        if (lineText.indexOf(this._endAnchor) > 0 ) {
+                            tocConfiguration.TocHeader = lineText.substring(lineText.indexOf(this._endAnchor)  + this._endAnchor.length);
+                        }
+                    }
+
                     if(lineText.startsWith(tocConfiguration.StartLine)) {
                         readingConfiguration = true;
                         tocConfiguration.TocCellNum = cellIndex;
                         continue;
                     }
-            
+
                     if(readingConfiguration) {
                         tocConfiguration.Read(lineText);
                     }

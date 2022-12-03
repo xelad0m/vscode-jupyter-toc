@@ -5,6 +5,7 @@
 ### TODO
 
 - [ ] Figure out how vscode scrolling works for precise navigation
+- [ ] Toc cell represents as 'empty cell' in builtin outline panel
 
 ## v0.1.7 (14 November 2022)
 

@@ -72,10 +72,11 @@ Removing table of contents:
 
 ### 4.1. Some details and tips
 
-1. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
-2. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section. Or choose this extension in Extension browser (`Ctrl+Shift+X`), than press `Manage` button, choose `Extension settings`.
-3. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation/update of the table of contents in this document.
-4. If you deleted a cell with TOC, but the headings remained with links to the TOC, just use command `Remove table of contents`. It will remove unnecessary links from the headers.
+1. **If you have used versions of this extension less than `v0.2.0`, you may need to call the `Remove table of contents` command before updating/creating a new table of contents, because the format of the table of contents has changed slightly.**
+2. Jupyter notebook cell with generated TOC on update replaces with new one so there is no sence to place in it any other text data.
+3. Default settings for TOC generation can be changed via `File - Preferences - Settings - Jupyter TOC` section. Or choose this extension in Extension browser (`Ctrl+Shift+X`), than press `Manage` button, choose `Extension settings`.
+4. The settings for a particular Jupyter notebook can be overrided by editing the settings directly in the bottom of cell with the table of contents. These settings will have the highest priority for the subsequent generation/update of the table of contents in this document.
+5. If you deleted a cell with TOC, but the headings remained with links to the TOC, just use command `Remove table of contents`. It will remove unnecessary links from the headers.
 
 ## 5. Supported settings
 

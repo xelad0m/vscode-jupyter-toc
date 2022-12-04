@@ -1,7 +1,7 @@
 {
   "name": "jupyter-toc",
   "displayName": "Jupyter TOC",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Generate table of contents for Jupyter notebooks.",
   "publisher": "xelad0m",
   "author": {

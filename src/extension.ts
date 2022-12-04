@@ -44,9 +44,8 @@ export function deactivate() {};
 
 export class TocGenerator {
     private _config: TocConfiguration = new TocConfiguration();
-    private _tocStartLine: string  = "<!-- vscode-jupyter-toc -->";
     private _tocDisclimer: string = "<!-- THIS CELL WILL BE REPLACED ON TOC UPDATE. DO NOT WRITE YOUR TEXT IN THIS CELL -->";
-    private _tocEndLine: string  = "<!-- /vscode-jupyter-toc -->";
+    private _tocHeaderAnchor: string = "<a id='toc0_'></a>";
     private _endAnchor: string = "</a>";
     
     process(remove: boolean = false){
@@ -189,7 +188,7 @@ export class TocGenerator {
     readConfiguration(cells: vscode.NotebookCell[]) : TocConfiguration {
         let tocConfiguration: TocConfiguration = new TocConfiguration();
         let readingConfiguration: boolean = false;
-        let readingToc: boolean = false;
+        
         cells.forEach((cell, cellIndex)  => {
             if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
                 let docText = cell.document.getText();
@@ -200,27 +199,20 @@ export class TocGenerator {
             
                     // Break the loop, cause we read the configuration,
                     // so if several TOC in doc we read config from the first
-                    if(lineText.startsWith(tocConfiguration.EndLine)) {
+                    if (lineText.startsWith(tocConfiguration.EndLine)) {
                         break;
                     }
 
-                    if(lineText.startsWith(this._tocStartLine)) {
-                        readingToc = true;
-                    }
-                    
-                    if (readingToc && !readingConfiguration) {   /* preserve modified header of Toc */
-                        if (lineText.indexOf(this._endAnchor) > 0 ) {
-                            tocConfiguration.TocHeader = lineText.substring(lineText.indexOf(this._endAnchor)  + this._endAnchor.length);
-                        }
-                    }
-
-                    if(lineText.startsWith(tocConfiguration.StartLine)) {
+                    if (lineText.startsWith(tocConfiguration.StartLine)) {
                         readingConfiguration = true;
                         tocConfiguration.TocCellNum = cellIndex;
+                        
+                        let tocHeader = docArray[0].trim();  /* preserve modified header of Toc */
+                        tocConfiguration.TocHeader = tocHeader.replace(this._tocHeaderAnchor, "");
                         continue;
                     }
 
-                    if(readingConfiguration) {
+                    if (readingConfiguration) {
                         tocConfiguration.Read(lineText);
                     }
                 
@@ -332,8 +324,8 @@ export class TocGenerator {
     buildSummary(headers : List<Header>) : string {
           let tocHeaderAnchor =  (this._config.Anchor) ? "<a id='toc0_'></a>" : ""
           let tocSummary : string = this._config.TocHeader + tocHeaderAnchor + "    \n";
-                                    this._tocStartLine + "\n" + 
-                                    this._tocDisclimer + "\n" + 
+                                    // this._tocStartLine + "\n" + 
+                                    // this._tocDisclimer + "\n" + 
         
           headers.ForEach((header, idx) => {
             if (header != undefined) {
@@ -364,7 +356,7 @@ export class TocGenerator {
         });
   
         tocSummary = tocSummary.concat("\n" + this._config.Build());
-        tocSummary = tocSummary.concat("\n" + this._tocEndLine);
+        tocSummary = tocSummary.concat("\n" + this._tocDisclimer);
     
         return tocSummary;
     }
@@ -522,7 +514,6 @@ class TocConfiguration {
         configuration = configuration.concat("\n\t" + this._minLevelKey + this.MinLevel);
         configuration = configuration.concat("\n\t" + this._maxLevelKey + this.MaxLevel);
         configuration = configuration.concat("\n\t" + this.EndLine);
-        // configuration = configuration.concat("\n\t" + this._autoSaveKey + this.AutoSave);
     
         return configuration;
     }

@@ -6,6 +6,12 @@
 
 - [ ] Figure out how vscode scrolling works for precise navigation
 
+## v0.2.0 (4 December 2022)
+
+### Changed
+
+- [x] Toc cell content rearranged (not backward compatible)
+
 ## v0.1.9 (4 December 2022)
 
 ### Fixed

@@ -5,9 +5,16 @@
 ### TODO
 
 - [ ] Figure out how vscode scrolling works for precise navigation
-- [ ] Toc cell represents as 'empty cell' in builtin outline panel
+
+## v0.1.9 (4 December 2022)
+
+### Fixed
+
+- [x] Toc cell represents as 'empty cell' in builtin outline panel
 
 ## v0.1.7 (14 November 2022)
+
+## Fixed
 
 - [x] Correct processing of date-like numbers at the begining of title
     - It means updating only dot separated numbering of title, preserving all other numbers in title

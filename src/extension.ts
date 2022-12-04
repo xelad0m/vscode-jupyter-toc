@@ -330,9 +330,10 @@ export class TocGenerator {
 
     // build string representation of table of contents
     buildSummary(headers : List<Header>) : string {
-          let tocSummary : string = this._tocStartLine + "\n" + 
-                                  this._tocDisclimer + "\n" + 
-                                  "<a id='toc0_'></a>" + this._config.TocHeader + "    \n";
+          let tocHeaderAnchor =  (this._config.Anchor) ? "<a id='toc0_'></a>" : ""
+          let tocSummary : string = this._config.TocHeader + tocHeaderAnchor + "    \n";
+                                    this._tocStartLine + "\n" + 
+                                    this._tocDisclimer + "\n" + 
         
           headers.ForEach((header, idx) => {
             if (header != undefined) {

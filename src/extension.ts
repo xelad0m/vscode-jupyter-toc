@@ -322,12 +322,10 @@ export class TocGenerator {
 
     // build string representation of table of contents
     buildSummary(headers : List<Header>) : string {
-          let tocHeaderAnchor =  (this._config.Anchor) ? "<a id='toc0_'></a>" : ""
-          let tocSummary : string = this._config.TocHeader + tocHeaderAnchor + "    \n";
-                                    // this._tocStartLine + "\n" + 
-                                    // this._tocDisclimer + "\n" + 
+        let tocHeaderAnchor =  (this._config.Anchor) ? this._tocHeaderAnchor : "";
+        let tocSummary : string = this._config.TocHeader + tocHeaderAnchor + "    \n";
         
-          headers.ForEach((header, idx) => {
+        headers.ForEach((header, idx) => {
             if (header != undefined) {
                 let title = header.cleanTitle;  // we want to push to anchored TOC the header without links
                 let tocLine = "";
@@ -392,7 +390,7 @@ export class TocGenerator {
             if (m != null) {
                 let link = m[0];
                 let name = m[1];
-                title = (this._config.AnchorStrings.indexOf(name) < 0) ? name : title.replace(link, "");
+                title = ((this._config.AnchorStrings.indexOf(name) < 0) && (name != "")) ? name : title.replace(link, "");
             }
         }
 

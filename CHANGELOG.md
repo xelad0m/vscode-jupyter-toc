@@ -6,6 +6,12 @@
 
 - [ ] Figure out how vscode scrolling works for precise navigation
 
+## v0.2.1 (16 December 2022)
+
+### Fixed
+
+- [x] Empty link from header to Toc may remove header on update
+
 ## v0.2.0 (4 December 2022)
 
 ### Changed

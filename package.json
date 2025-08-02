@@ -1,7 +1,7 @@
 {
   "name": "jupyter-toc",
   "displayName": "Jupyter TOC",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Generate table of contents for Jupyter notebooks.",
   "publisher": "xelad0m",
   "author": {
@@ -18,17 +18,17 @@
   "license": "SEE LICENSE.txt",
   "homepage": "https://github.com/xelad0m/vscode-jupyter-toc",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/xelad0m/vscode-jupyter-toc"
+    "type": "git",
+    "url": "https://github.com/xelad0m/vscode-jupyter-toc"
   },
   "bugs": {
-      "url": "https://github.com/xelad0m/vscode-jupyter-toc/issues"
+    "url": "https://github.com/xelad0m/vscode-jupyter-toc/issues"
   },
   "qna": "https://github.com/xelad0m/vscode-jupyter-toc/discussions",
   "icon": "icon.png",
   "galleryBanner": {
-      "color": "#ffffff",
-      "theme": "light"
+    "color": "#ffffff",
+    "theme": "light"
   },
   "keywords": [
     "jupyter",
@@ -79,7 +79,7 @@
         }
       ]
     },
-      "configuration": {
+    "configuration": {
       "title": "Jupyter TOC",
       "displayName": "Jupyter TOC",
       "properties": {
@@ -181,17 +181,15 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/glob": "^8.0.0",
-    "@types/mocha": "^10.0.0",
-    "@types/node": "16.x",
     "@types/vscode": "^1.72.0",
-    "@typescript-eslint/eslint-plugin": "^5.38.1",
-    "@typescript-eslint/parser": "^5.38.1",
-    "@vscode/test-electron": "^2.1.5",
-    "eslint": "^8.24.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.8.2",
-    "typescript": "^4.8.4"
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
   },
   "dependencies": {
     "linqts": "^1.14.4"

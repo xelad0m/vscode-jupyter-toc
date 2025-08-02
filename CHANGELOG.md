@@ -6,6 +6,12 @@
 
 - [ ] Figure out how vscode scrolling works for precise navigation
 
+## v0.2.2 (02 August 2025)
+
+### Fixed
+
+- [x] Embedded images disappearing on Toc insert/update
+
 ## v0.2.1 (16 December 2022)
 
 ### Fixed

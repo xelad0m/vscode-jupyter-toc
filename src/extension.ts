@@ -68,6 +68,7 @@ export class TocGenerator {
                 cells.forEach((cell, cellIndex)  => {     		
                     if (vscode.NotebookCellKind[cell.kind] == 'Markup') {
                         let docText = cell.document.getText();
+                        let docMetadata = cell.metadata; // preserve metadata                        
                         let docArray = docText.split(/\r?\n/);
                         let isCellUpdate = false;
 
@@ -96,7 +97,7 @@ export class TocGenerator {
                         docText = docArray.join("\n");	// cell content with edits
 
                         if (isCellUpdate && editor != undefined) {
-                            this.updateCell(uri, docText, cellIndex);
+                            this.updateCell(uri, docText, cellIndex, docMetadata);
                         }
                     }
                 });
@@ -112,7 +113,7 @@ export class TocGenerator {
                         infoMessage = `Table of contents inserted as Cell #${selected}`;	
                     } else { // else update existing TOC (first if many) by replace
                         let tocCellNum = this._config.TocCellNum;
-                        this.updateCell(uri, tocSummary, tocCellNum);
+                        this.updateCell(uri, tocSummary, tocCellNum, undefined);
                         infoMessage = `Table of contents updated at Cell #${tocCellNum}`;	
                     }
                 }
@@ -177,10 +178,13 @@ export class TocGenerator {
         await vscode.workspace.applyEdit(edit);
     }
 
-    private async updateCell(uri: vscode.Uri, docText: string, cellNum: number){
+    async updateCell(uri: vscode.Uri, docText: string, cellNum: number, cellMetadata: any) {
         const edit = new vscode.WorkspaceEdit();
         let range = new vscode.NotebookRange(cellNum, cellNum + 1);
-        let tocCell = new vscode.NotebookCellData(MD_CELL_KIND, docText, MD_LANG_ID);	
+        let tocCell = new vscode.NotebookCellData(MD_CELL_KIND, docText, MD_LANG_ID);
+        if (cellMetadata != undefined) {
+            tocCell.metadata = cellMetadata; // preserve metadata (image attachments lives here)
+        }
         edit.set(uri, [vscode.NotebookEdit.replaceCells(range, [tocCell])]);
         await vscode.workspace.applyEdit(edit);
     }
